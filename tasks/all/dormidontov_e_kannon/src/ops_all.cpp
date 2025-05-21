@@ -114,7 +114,6 @@ void dormidontov_e_kannon_all::allTask::MultImpl() {
       }
     }
 
-    // все процессы собирают свои C_local в глобальный C_
     C_ = boost::mpi::all_reduce(world_, C_local, std::plus<>());
   }
 }
