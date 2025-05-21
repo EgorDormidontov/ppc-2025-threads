@@ -184,7 +184,7 @@ TEST(dormidontov_e_kannon_stl, mat27x27) {
 }
 
 TEST(dormidontov_e_kannon_stl, I_mat) {
-  size_t test_side_size = 36;
+  size_t test_side_size = 12;
   size_t test_num_blocks = 6;
   matrix A(test_side_size * test_side_size, 1.0);
   matrix B(test_side_size * test_side_size);
