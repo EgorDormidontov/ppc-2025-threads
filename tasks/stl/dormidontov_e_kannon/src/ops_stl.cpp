@@ -1,10 +1,10 @@
+#include "stl/dormidontov_e_kannon/include/ops_stl.hpp"
+
 #include <algorithm>
 #include <cmath>
 #include <core/util/include/util.hpp>
 #include <thread>
 #include <vector>
-
-#include "stl/dormidontov_e_kannon/include/ops_stl.hpp"
 
 bool dormidontov_e_kannon_stl::stlTask::PreProcessingImpl() {
   block_size_ = side_size_ / num_blocks_;
