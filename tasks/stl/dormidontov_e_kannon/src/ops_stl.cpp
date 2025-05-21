@@ -41,7 +41,7 @@ void dormidontov_e_kannon_stl::stlTask::StartingShift() {
     size_t start = delta * th;
     size_t end = delta * (th + 1);
     end += rest;
-    if (i != 0) {
+    if (th != 0) {
       start += rest;
     }
     threads[i] = std::thread([&, start, end]() {
@@ -80,7 +80,7 @@ void dormidontov_e_kannon_stl::stlTask::IterationShift() {
     size_t start = delta * th;
     size_t end = delta * (th + 1);
     end += rest;
-    if (i != 0) {
+    if (th != 0) {
       start += rest;
     }
     threads[i] = std::thread([&, start, end]() {
