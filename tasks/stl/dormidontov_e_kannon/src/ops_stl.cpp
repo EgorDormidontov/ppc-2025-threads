@@ -37,9 +37,9 @@ void dormidontov_e_kannon_stl::stlTask::StartingShift() {
   std::vector<std::thread> threads(th_count);
   size_t delta = num_blocks_ / th_count;
   size_t rest = num_blocks_ % th_count;
-  for (size_t i = 0; i < th_count; ++i) {
-    size_t start = delta * i;
-    size_t end = delta * (i + 1);
+  for (size_t th = 0; th < th_count; ++th) {
+    size_t start = delta * th;
+    size_t end = delta * (th + 1);
     end += rest;
     if (i != 0) {
       start += rest;
@@ -76,9 +76,9 @@ void dormidontov_e_kannon_stl::stlTask::IterationShift() {
   std::vector<std::thread> threads(th_count);
   size_t delta = num_blocks_ / th_count;
   size_t rest = num_blocks_ % th_count;
-  for (size_t i = 0; i < th_count; ++i) {
-    size_t start = delta * i;
-    size_t end = delta * (i + 1);
+  for (size_t th = 0; th < th_count; ++th) {
+    size_t start = delta * th;
+    size_t end = delta * (th + 1);
     end += rest;
     if (i != 0) {
       start += rest;
