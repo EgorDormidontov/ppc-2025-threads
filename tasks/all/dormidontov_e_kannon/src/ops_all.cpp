@@ -114,7 +114,7 @@ void dormidontov_e_kannon_all::allTask::MultImpl() {
       }
     }
 
-    C_ = boost::mpi::all_reduce(world_, C_local, std::plus<>());
+    C_ = boost::mpi::all_reduce(world_, C_local, std::plus<double>());
   }
 }
 
