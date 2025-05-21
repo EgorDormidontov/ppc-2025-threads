@@ -6,6 +6,7 @@
 #include <tbb/tbb.h>
 
 #include <algorithm>
+#include <boost/mpi/collectives/all_reduce.hpp>
 #include <boost/mpi/collectives/broadcast.hpp>
 #include <boost/mpi/collectives/reduce.hpp>
 #include <boost/serialization/vector.hpp>
