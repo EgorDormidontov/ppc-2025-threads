@@ -34,7 +34,7 @@ void dormidontov_e_kannon_stl::stlTask::StartingShift() {
   std::swap(B_buffer_, B_);
 
   size_t th_count = std::max(ppc::util::GetPPCNumThreads(), 1);
-  th_count = std::min(th_count, num_blocks);
+  th_count = std::min(th_count, num_blocks_);
   std::vector<std::thread> threads(th_count);
   size_t delta = num_blocks_ / th_count;
   size_t rest = num_blocks_ % th_count;
