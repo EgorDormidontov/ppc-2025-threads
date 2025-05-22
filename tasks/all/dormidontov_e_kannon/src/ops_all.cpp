@@ -91,7 +91,7 @@ void dormidontov_e_kannon_all::allTask::IterationShift() {
 void dormidontov_e_kannon_all::allTask::MultImpl() {
   size_t size = world_.size();
   size_t rank = world_.rank();
-  std::vector<double> C_local(side_size_ * side_size_, 0.0);
+  std::vector<double> C_local(matrix_size_, 0.0);
 
   for (size_t iter = 0; iter < num_blocks_; ++iter) {
     size_t blocks_per_proc = (num_blocks_ + size - 1) / size;
@@ -115,7 +115,7 @@ void dormidontov_e_kannon_all::allTask::MultImpl() {
       }
     }
 
-    C_ = boost::mpi::all_reduce(world_, C_local, std::plus<double>());
+    boost::mpi::all_reduce(world_, C_local.data(), matrix_size_, C_.data(), std::plus<double>{});
   }
 }
 
