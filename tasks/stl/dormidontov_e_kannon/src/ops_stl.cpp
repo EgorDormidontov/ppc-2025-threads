@@ -73,38 +73,22 @@ void dormidontov_e_kannon_stl::stlTask::IterationShift() {
   std::swap(A_buffer_, A_);
   std::swap(B_buffer_, B_);
 
-  size_t th_count = std::max(ppc::util::GetPPCNumThreads(), 1);
-  std::vector<std::thread> threads(th_count);
-  size_t delta = num_blocks_ / th_count;
-  size_t rest = num_blocks_ % th_count;
-  for (size_t th = 0; th < th_count; ++th) {
-    size_t start = delta * th;
-    size_t end = delta * (th + 1);
-    end += rest;
-    if (th != 0) {
-      start += rest;
-    }
-    threads[th] = std::thread([&, start, end]() {
-      for (size_t block_i = start; block_i != end; ++block_i) {
-        for (size_t block_j = 0; block_j < num_blocks_; ++block_j) {
-          size_t row;
-          size_t col;
-          row = (block_i + 1) % num_blocks_;
-          col = (block_j + 1) % num_blocks_;
-          for (size_t i = 0; i < block_size_; ++i) {
-            for (size_t j = 0; j < block_size_; ++j) {
-              A_[idx(idx(block_i, i, block_size_), idx(block_j, j, block_size_), side_size_)] =
-                  A_buffer_[idx(idx(block_i, i, block_size_), idx(col, j, block_size_), side_size_)];
-              B_[idx(idx(block_i, i, block_size_), idx(block_j, j, block_size_), side_size_)] =
-                  B_buffer_[idx(idx(row, i, block_size_), idx(block_j, j, block_size_), side_size_)];
-            }
-          }
+  size_t row;
+  size_t col;
+
+  for (size_t block_i = 0; block_i < num_blocks_; ++block_i) {
+    for (size_t block_j = 0; block_j < num_blocks_; ++block_j) {
+      row = (block_i + 1) % num_blocks_;
+      col = (block_j + 1) % num_blocks_;
+      for (size_t i = 0; i < block_size_; ++i) {
+        for (size_t j = 0; j < block_size_; ++j) {
+          A_[idx(idx(block_i, i, block_size_), idx(block_j, j, block_size_), side_size_)] =
+              A_buffer_[idx(idx(block_i, i, block_size_), idx(col, j, block_size_), side_size_)];
+          B_[idx(idx(block_i, i, block_size_), idx(block_j, j, block_size_), side_size_)] =
+              B_buffer_[idx(idx(row, i, block_size_), idx(block_j, j, block_size_), side_size_)];
         }
       }
-    });
-  }
-  for (std::thread& worker : threads) {
-    worker.join();
+    }
   }
 }
 
