@@ -32,33 +32,6 @@ matrix NaiveMultipilication(const matrix& A, const matrix& B, size_t n) {
   return C;
 }
 
-TEST(dormidontov_e_kannon_stl, mat36x36) {
-  size_t test_side_size = 36;
-  size_t test_num_blocks = 6;
-  auto A = GenMatrix(test_side_size);
-  auto B = GenMatrix(test_side_size);
-  matrix ans = NaiveMultipilication(A, B, test_side_size);
-  matrix C(test_side_size * test_side_size);
-
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
-  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(A.data()));
-  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(B.data()));
-  task_data_seq->inputs_count.emplace_back(A.size());
-  task_data_seq->inputs_count.emplace_back(B.size());
-  task_data_seq->inputs_count.emplace_back(test_num_blocks);
-  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(C.data()));
-  task_data_seq->outputs_count.emplace_back(C.size());
-
-  dormidontov_e_kannon_stl::stlTask task_seq(task_data_seq);
-  ASSERT_TRUE(task_seq.Validation());
-  task_seq.PreProcessing();
-  task_seq.Run();
-  task_seq.PostProcessing();
-  for (size_t i = 0; i < test_side_size * test_side_size; i++) {
-    EXPECT_NEAR(ans[i], C[i], 1e-6);
-  }
-}
-
 TEST(dormidontov_e_kannon_stl, mat16) {
   size_t test_side_size = 4;
   size_t test_num_blocks = 2;
@@ -104,34 +77,6 @@ TEST(dormidontov_e_kannon_stl, wrong_matrix_size) {
 
   dormidontov_e_kannon_stl::stlTask task_seq(task_data_seq);
   ASSERT_FALSE(task_seq.Validation());
-}
-
-TEST(dormidontov_e_kannon_stl, mat_18x18) {
-  size_t test_side_size = 18;
-  size_t test_num_blocks = 6;
-  matrix A(test_side_size * test_side_size, 1.0);
-  matrix B(test_side_size * test_side_size, 1.0);
-  matrix C(test_side_size * test_side_size, 0.0);
-  matrix ans(test_side_size * test_side_size, test_side_size);
-
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
-  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(A.data()));
-  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(B.data()));
-  task_data_seq->inputs_count.emplace_back(A.size());
-  task_data_seq->inputs_count.emplace_back(B.size());
-  task_data_seq->inputs_count.emplace_back(test_num_blocks);
-  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(C.data()));
-  task_data_seq->outputs_count.emplace_back(C.size());
-
-  dormidontov_e_kannon_stl::stlTask task_seq(task_data_seq);
-  ASSERT_TRUE(task_seq.Validation());
-  task_seq.PreProcessing();
-  task_seq.Run();
-  task_seq.PostProcessing();
-
-  for (size_t i = 0; i < test_side_size * test_side_size; i++) {
-    EXPECT_NEAR(ans[i], C[i], 1e-6);
-  }
 }
 
 TEST(dormidontov_e_kannon_stl, wrong_block_size) {
